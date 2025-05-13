@@ -1,0 +1,226 @@
+@font-face {
+  font-family: Poppins;
+  src: url(../fonts/Poppins-Regular.ttf);
+}
+@font-face {
+  font-family: PoppinsBlack;
+  src: url(../fonts/Poppins-Black.ttf);
+}
+*{
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	font-family: Poppins, sans-serif;
+}
+.section-1 {
+	width: 100%;
+	height: 100vh;
+    position: relative;
+    background: linear-gradient(rgba(12, 28, 61, 0.8), rgba(42, 84, 122, 0.8)), url('../img/hero-banner.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+.home-p {
+	background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../img/bg2.jpg');
+	background-size: cover;
+	background-position: center;
+}
+.about-p{
+   background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../img/bg.jpg');
+   background-size: cover;
+   background-position: center;
+}
+.overl {
+	width: 100%;
+	height: 100vh;
+	background: #000;
+	position: relative;
+	opacity: 0.5;
+}
+header {
+	display: flex;
+	padding: 30px;
+	align-items: center;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	transition: 500ms;
+	background: rgba(255, 255, 255, 0.1);
+	backdrop-filter: blur(10px);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+	padding: 20px 30px;
+	transition: all 0.3s ease;
+}
+nav {
+	margin-right: 70px;
+}
+nav a {
+	display: inline-block;
+	margin-left: 10px;
+	font-size: 15px;
+	text-decoration: none;
+	color: #eee;
+	text-transform: uppercase;
+	border-bottom:  3px solid transparent;
+	padding: 10px 1px;
+	transition: 200ms;
+	position: relative;
+	overflow: hidden;
+	padding: 10px 20px;
+	border-radius: 5px;
+	transition: all 0.3s ease;
+    background: rgba(255,255,255,0.1);
+}
+nav a::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(255,255,255,0.1);
+	transform: scaleX(0);
+	transform-origin: right;
+	transition: transform 0.3s ease;
+	z-index: -1;
+}
+nav a:hover::before {
+	transform: scaleX(1);
+	transform-origin: left;
+}
+.active {
+	border-color: #00B3FF;
+}
+nav a:hover {
+	border-color: #00B3FF;
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+}
+.logo {
+	flex: 1;
+	font-size:25 px;
+	margin-left: 70px;
+	color: #fff;
+	position: relative;
+	overflow: hidden;
+}
+.logo::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: -100%;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+	transition: 0.5s;
+}
+.logo:hover::after {
+	left: 100%;
+}
+.logo img{
+	width: 50px;
+	display: none;
+}
+.bgc {
+	background: #eee;
+	padding: 10px;
+}
+  color: #aaa;
+  font-weight: 200;
+}
+@media (max-width: 769px){
+	header {
+/*		flex-direction: column;*/
+		padding: 20px;
+	}
+	nav {
+		padding: 15px;
+		margin: 0px;
+	}
+	.logo span{
+		display: none;
+	}
+	.logo img{
+		display: block;
+	}
+}
+
+.container404 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+ .container404 .error-container {
+    text-align: center;
+    padding: 70px;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.container404 h1 {
+    font-size: 150px;
+    margin: 0;
+    color: #3498db;
+    line-height: 1;
+}
+
+.container404 p {
+    font-size: 20px;
+    margin: 10px 0 20px;
+    color: #555;
+}
+
+.container404 .svg-container {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.container404 .rotate {
+    animation: rotate 2s infinite linear;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.section-2 {
+    padding: 50px 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.section-2 h1 {
+    background: linear-gradient(45deg, #2193b0, #6dd5ed);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-align: center;
+    margin: 30px 0;
+}
+
+.section-2 p {
+    max-width: 800px;
+    margin: 20px auto;
+    line-height: 1.6;
+    color: #333;
+}
+
+.feature-card img {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover img {
+    transform: scale(1.1);
+}

@@ -1,0 +1,50 @@
+</div>
+<h1 style="padding-left: 300px;">Latest Tech Articles</h1>
+
+<br>
+<div style="padding-top: 100px;padding-right: 750px;" class="article-container" id="articles">Loading articles...</div>
+
+<script>
+    async function loadRSSFeed() {
+        const rssFeedUrl = "https://feeds.arstechnica.com/arstechnica/index";
+        const proxy = "https://api.allorigins.win/get?url="; // Alternative proxy
+
+        try {
+            const response = await fetch(proxy + encodeURIComponent(rssFeedUrl));
+            if (!response.ok) throw new Error("Network response was not ok");
+
+            const json = await response.json();
+            const text = json.contents; // Extracting content from API response
+            const xml = new window.DOMParser().parseFromString(text, "text/xml");
+
+            let items = xml.querySelectorAll("item");
+            let output = "";
+
+            items.forEach(el => {
+                let title = el.querySelector("title").textContent;
+                let link = el.querySelector("link").textContent;
+                let date = new Date(el.querySelector("pubDate").textContent).toLocaleDateString();
+
+                output += `
+                    <div class="article">
+                        <a href="${link}" target="_blank">${title}</a>
+                        <p><small>Published on: ${date}</small></p>
+                    </div>
+                `;
+            });
+
+            document.getElementById("articles").innerHTML = output;
+        } catch (error) {
+            document.getElementById("articles").innerHTML = "Failed to load articles.";
+            console.error("Error fetching RSS:", error);
+        }
+    }
+
+    loadRSSFeed();
+</script>
+
+    <script>
+        console.log("Article loaded!");
+    </script>
+    </button>
+    <script>window.$zoho=window.$zoho || {};$zoho.salesiq=$zoho.salesiq||{ready:function(){}}</script><script id="zsiqscript" src="https://salesiq.zohopublic.com/widget?wc=siq2157a4c97d60f3c3a08009982b8f744b9be8b801d6052eece59d3c315eaea360" defer></script>
