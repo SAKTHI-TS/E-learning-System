@@ -11,7 +11,6 @@
         max-width: 1000px;
         margin: 0 auto;
         padding: 2rem;
-        background: linear-gradient(135deg, #1a2a6c, #2948ff, #0f0c29);
         position: relative;
     }
 
@@ -33,10 +32,6 @@
         height: 3px;
         background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
         margin: 10px auto;
-    }
-
-    .page-title i {
-        color: #4ecdc4;
     }
 
     .articles-grid {
@@ -102,15 +97,6 @@
         gap: 0.5rem;
     }
 
-    .category-tag {
-        background: rgba(78, 205, 196, 0.2);
-        padding: 4px 8px;
-        border-radius: 12px;
-        font-size: 0.8em;
-        color: #4ecdc4;
-        margin-right: 8px;
-    }
-
     .loading {
         text-align: center;
         color: #fff;
@@ -134,35 +120,6 @@
         0% { background-position: -1000px 0; }
         100% { background-position: 1000px 0; }
     }
-
-    .article-description {
-        color: #d1d1d1;
-        font-size: 0.9em;
-        margin: 10px 0;
-        line-height: 1.4;
-    }
-
-    .article-meta {
-        border-top: 1px solid rgba(255,255,255,0.1);
-        padding-top: 10px;
-        margin-top: 10px;
-    }
-
-    .retry-button {
-        background: #4ecdc4;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        color: white;
-        cursor: pointer;
-        margin-top: 15px;
-        transition: all 0.3s ease;
-    }
-
-    .retry-button:hover {
-        background: #45b8b0;
-        transform: translateY(-2px);
-    }
 </style>
 
 <div class="article-container">
@@ -182,103 +139,47 @@
 
 <script>
     async function loadRSSFeed() {
-        // More reliable education RSS feeds
-        const rssFeedUrls = [
-            "https://www.edsurge.com/rss",
-            "https://www.eschoolnews.com/feed",
-            "https://www.educationnext.org/feed",
-            "https://www.edweek.org/feed",
-            "https://www.teachthought.com/feed/"
-        ];
+        const rssFeedUrl = "https://feeds.arstechnica.com/arstechnica/index";
+        const proxy = "https://api.allorigins.win/get?url=";
 
-        const corsProxies = [
-            "https://api.allorigins.win/get?url=",
-            "https://cors-anywhere.herokuapp.com/",
-            "https://api.codetabs.com/v1/proxy?quest="
-        ];
+        try {
+            const response = await fetch(proxy + encodeURIComponent(rssFeedUrl));
+            if (!response.ok) throw new Error("Network response was not ok");
 
-        const articles = document.getElementById("articles");
-        articles.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading educational content...</div>';
+            const json = await response.json();
+            const text = json.contents;
+            const xml = new window.DOMParser().parseFromString(text, "text/xml");
 
-        let allArticles = [];
-        let successfulFetch = false;
-
-        for (const feedUrl of rssFeedUrls) {
-            for (const proxy of corsProxies) {
-                try {
-                    const response = await fetch(proxy + encodeURIComponent(feedUrl));
-                    if (!response.ok) continue;
-
-                    const data = await response.json();
-                    const xml = new window.DOMParser().parseFromString(
-                        proxy.includes('allorigins') ? data.contents : data,
-                        "text/xml"
-                    );
-
-                    const items = xml.querySelectorAll("item");
-                    items.forEach(item => {
-                        const title = item.querySelector("title")?.textContent;
-                        const link = item.querySelector("link")?.textContent;
-                        const date = new Date(item.querySelector("pubDate")?.textContent);
-                        const description = item.querySelector("description")?.textContent;
-                        
-                        // Education-focused keywords
-                        const keywords = [
-                            'education', 'learning', 'student', 'teaching',
-                            'course', 'placement', 'career', 'training',
-                            'skill', 'classroom', 'academic', 'study'
-                        ];
-
-                        if (keywords.some(keyword => 
-                            title?.toLowerCase().includes(keyword) || 
-                            description?.toLowerCase().includes(keyword))) {
-                            allArticles.push({ title, link, date, description });
-                            successfulFetch = true;
-                        }
-                    });
-
-                    if (successfulFetch) break; // Exit proxy loop if successful
-                } catch (error) {
-                    console.warn(`Failed to fetch from ${feedUrl} using ${proxy}:`, error);
-                    continue;
-                }
-            }
-            if (successfulFetch) break; // Exit feed loop if we have articles
-        }
-
-        if (allArticles.length > 0) {
-            allArticles.sort((a, b) => b.date - a.date);
+            let items = xml.querySelectorAll("item");
             let output = "";
 
-            allArticles.slice(0, 10).forEach((article, index) => {
+            items.forEach((el, index) => {
+                let title = el.querySelector("title").textContent;
+                let link = el.querySelector("link").textContent;
+                let date = new Date(el.querySelector("pubDate").textContent).toLocaleDateString();
+
                 output += `
                     <div class="article" style="animation: fadeIn 0.5s ease-out ${index * 0.1}s forwards">
-                        <a href="${article.link}" target="_blank">
-                            <i class="fas fa-graduation-cap"></i> 
-                            ${article.title}
+                        <a href="${link}" target="_blank">
+                            <i class="fas fa-link"></i> ${title}
                         </a>
-                        <p class="article-description">${article.description?.slice(0, 150)}...</p>
-                        <p class="article-meta">
-                            <i class="far fa-calendar-alt"></i>
-                            <span>Published: ${article.date.toLocaleDateString()}</span>
-                            <span class="category-tag">Education</span>
+                        <p>
+                            <i class="far fa-clock"></i>
+                            <span>Published: ${date}</span>
                         </p>
                     </div>
                 `;
             });
 
-            articles.innerHTML = output;
-        } else {
-            articles.innerHTML = `
+            document.getElementById("articles").innerHTML = output;
+        } catch (error) {
+            document.getElementById("articles").innerHTML = `
                 <div class="error">
-                    <i class="fas fa-info-circle"></i>
-                    <p>We're having trouble loading the latest education articles.</p>
-                    <p>Please try refreshing the page in a few moments.</p>
-                    <button onclick="loadRSSFeed()" class="retry-button">
-                        <i class="fas fa-sync"></i> Try Again
-                    </button>
+                    <i class="fas fa-exclamation-circle"></i>
+                    Failed to load articles. Please try again later.
                 </div>
             `;
+            console.error("Error fetching RSS:", error);
         }
     }
 
