@@ -143,7 +143,7 @@
     </section>
      
     <footer class="main-footer">
-        <h4>RCD2013C - LearnTeach.AI&copy;2024</h4>
+        <h4>RCD2013C - LearnTech.AI&copy;2024</h4>
     </footer>
     <script src="assets/js/jquery-3.5.1.min.js"></script>
     <script>

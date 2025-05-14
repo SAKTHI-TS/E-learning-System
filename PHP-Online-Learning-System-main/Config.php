@@ -1,4 +1,4 @@
 <?php 
 
-define("SITE_NAME", "LearnTeach.AI");
+define("SITE_NAME", "LearnTech.AI");
  ?>

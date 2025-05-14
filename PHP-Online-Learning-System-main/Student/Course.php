@@ -18,7 +18,7 @@ if (isset($_SESSION['username']) &&
         Util::redirect("Courses.php", "error", $em);
     }
     # Header
-    $title = "LearnTeach.AI - Students ";
+    $title = "LearnTech.AI - Students ";
     include "inc/Header.php";
 
 ?>

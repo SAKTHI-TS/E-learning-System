@@ -1,50 +1,290 @@
-</div>
-<h1 style="padding-left: 300px;">Latest Tech Articles</h1>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #0f0c29;
+        background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+    }
 
-<br>
-<div style="padding-top: 100px;padding-right: 750px;" class="article-container" id="articles">Loading articles...</div>
+    .article-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 2rem;
+        background: linear-gradient(135deg, #1a2a6c, #2948ff, #0f0c29);
+        position: relative;
+    }
+
+    .page-title {
+        color: #fff;
+        text-align: center;
+        font-size: 3em;
+        margin-bottom: 2rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        position: relative;
+        text-shadow: 0 0 10px rgba(255,255,255,0.3);
+    }
+
+    .page-title::after {
+        content: '';
+        display: block;
+        width: 100px;
+        height: 3px;
+        background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+        margin: 10px auto;
+    }
+
+    .page-title i {
+        color: #4ecdc4;
+    }
+
+    .articles-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        padding: 1rem;
+    }
+
+    .article {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .article::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+        transform: translateX(-100%);
+        transition: 0.5s;
+    }
+
+    .article:hover::before {
+        transform: translateX(100%);
+    }
+
+    .article:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .article a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 1.1em;
+        font-weight: 500;
+        display: block;
+        margin-bottom: 1rem;
+        transition: color 0.3s ease;
+    }
+
+    .article a:hover {
+        color: #4ecdc4;
+    }
+
+    .article p {
+        color: #a8a8a8;
+        font-size: 0.9em;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .category-tag {
+        background: rgba(78, 205, 196, 0.2);
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.8em;
+        color: #4ecdc4;
+        margin-right: 8px;
+    }
+
+    .loading {
+        text-align: center;
+        color: #fff;
+        font-size: 1.2em;
+        padding: 2rem;
+        background: rgba(255,255,255,0.05);
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+    }
+
+    .error {
+        color: #ff6b6b;
+        text-align: center;
+        padding: 1rem;
+        background: rgba(255,0,0,0.1);
+        border-radius: 10px;
+        margin: 1rem 0;
+    }
+
+    @keyframes shimmer {
+        0% { background-position: -1000px 0; }
+        100% { background-position: 1000px 0; }
+    }
+
+    .article-description {
+        color: #d1d1d1;
+        font-size: 0.9em;
+        margin: 10px 0;
+        line-height: 1.4;
+    }
+
+    .article-meta {
+        border-top: 1px solid rgba(255,255,255,0.1);
+        padding-top: 10px;
+        margin-top: 10px;
+    }
+
+    .retry-button {
+        background: #4ecdc4;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        margin-top: 15px;
+        transition: all 0.3s ease;
+    }
+
+    .retry-button:hover {
+        background: #45b8b0;
+        transform: translateY(-2px);
+    }
+</style>
+
+<div class="article-container">
+    <h1 class="page-title">
+        <i class="fas fa-newspaper"></i>
+        Latest Tech Articles
+    </h1>
+
+    <div id="articles" class="articles-grid loading">
+        <i class="fas fa-spinner fa-spin"></i>
+        Loading the latest articles...
+    </div>
+</div>
+
+<!-- Add FontAwesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 <script>
     async function loadRSSFeed() {
-        const rssFeedUrl = "https://feeds.arstechnica.com/arstechnica/index";
-        const proxy = "https://api.allorigins.win/get?url="; // Alternative proxy
+        // More reliable education RSS feeds
+        const rssFeedUrls = [
+            "https://www.edsurge.com/rss",
+            "https://www.eschoolnews.com/feed",
+            "https://www.educationnext.org/feed",
+            "https://www.edweek.org/feed",
+            "https://www.teachthought.com/feed/"
+        ];
 
-        try {
-            const response = await fetch(proxy + encodeURIComponent(rssFeedUrl));
-            if (!response.ok) throw new Error("Network response was not ok");
+        const corsProxies = [
+            "https://api.allorigins.win/get?url=",
+            "https://cors-anywhere.herokuapp.com/",
+            "https://api.codetabs.com/v1/proxy?quest="
+        ];
 
-            const json = await response.json();
-            const text = json.contents; // Extracting content from API response
-            const xml = new window.DOMParser().parseFromString(text, "text/xml");
+        const articles = document.getElementById("articles");
+        articles.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading educational content...</div>';
 
-            let items = xml.querySelectorAll("item");
+        let allArticles = [];
+        let successfulFetch = false;
+
+        for (const feedUrl of rssFeedUrls) {
+            for (const proxy of corsProxies) {
+                try {
+                    const response = await fetch(proxy + encodeURIComponent(feedUrl));
+                    if (!response.ok) continue;
+
+                    const data = await response.json();
+                    const xml = new window.DOMParser().parseFromString(
+                        proxy.includes('allorigins') ? data.contents : data,
+                        "text/xml"
+                    );
+
+                    const items = xml.querySelectorAll("item");
+                    items.forEach(item => {
+                        const title = item.querySelector("title")?.textContent;
+                        const link = item.querySelector("link")?.textContent;
+                        const date = new Date(item.querySelector("pubDate")?.textContent);
+                        const description = item.querySelector("description")?.textContent;
+                        
+                        // Education-focused keywords
+                        const keywords = [
+                            'education', 'learning', 'student', 'teaching',
+                            'course', 'placement', 'career', 'training',
+                            'skill', 'classroom', 'academic', 'study'
+                        ];
+
+                        if (keywords.some(keyword => 
+                            title?.toLowerCase().includes(keyword) || 
+                            description?.toLowerCase().includes(keyword))) {
+                            allArticles.push({ title, link, date, description });
+                            successfulFetch = true;
+                        }
+                    });
+
+                    if (successfulFetch) break; // Exit proxy loop if successful
+                } catch (error) {
+                    console.warn(`Failed to fetch from ${feedUrl} using ${proxy}:`, error);
+                    continue;
+                }
+            }
+            if (successfulFetch) break; // Exit feed loop if we have articles
+        }
+
+        if (allArticles.length > 0) {
+            allArticles.sort((a, b) => b.date - a.date);
             let output = "";
 
-            items.forEach(el => {
-                let title = el.querySelector("title").textContent;
-                let link = el.querySelector("link").textContent;
-                let date = new Date(el.querySelector("pubDate").textContent).toLocaleDateString();
-
+            allArticles.slice(0, 10).forEach((article, index) => {
                 output += `
-                    <div class="article">
-                        <a href="${link}" target="_blank">${title}</a>
-                        <p><small>Published on: ${date}</small></p>
+                    <div class="article" style="animation: fadeIn 0.5s ease-out ${index * 0.1}s forwards">
+                        <a href="${article.link}" target="_blank">
+                            <i class="fas fa-graduation-cap"></i> 
+                            ${article.title}
+                        </a>
+                        <p class="article-description">${article.description?.slice(0, 150)}...</p>
+                        <p class="article-meta">
+                            <i class="far fa-calendar-alt"></i>
+                            <span>Published: ${article.date.toLocaleDateString()}</span>
+                            <span class="category-tag">Education</span>
+                        </p>
                     </div>
                 `;
             });
 
-            document.getElementById("articles").innerHTML = output;
-        } catch (error) {
-            document.getElementById("articles").innerHTML = "Failed to load articles.";
-            console.error("Error fetching RSS:", error);
+            articles.innerHTML = output;
+        } else {
+            articles.innerHTML = `
+                <div class="error">
+                    <i class="fas fa-info-circle"></i>
+                    <p>We're having trouble loading the latest education articles.</p>
+                    <p>Please try refreshing the page in a few moments.</p>
+                    <button onclick="loadRSSFeed()" class="retry-button">
+                        <i class="fas fa-sync"></i> Try Again
+                    </button>
+                </div>
+            `;
         }
     }
 
     loadRSSFeed();
 </script>
-
-    <script>
-        console.log("Article loaded!");
-    </script>
-    </button>
-    <script>window.$zoho=window.$zoho || {};$zoho.salesiq=$zoho.salesiq||{ready:function(){}}</script><script id="zsiqscript" src="https://salesiq.zohopublic.com/widget?wc=siq2157a4c97d60f3c3a08009982b8f744b9be8b801d6052eece59d3c315eaea360" defer></script>
+<script>
+    console.log("Article loaded!");
+</script>
+<script>window.$zoho=window.$zoho || {};$zoho.salesiq=$zoho.salesiq||{ready:function(){}}</script><script id="zsiqscript" src="https://salesiq.zohopublic.com/widget?wc=siq2157a4c97d60f3c3a08009982b8f744b9be8b801d6052eece59d3c315eaea360" defer></script>

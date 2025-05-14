@@ -1,4 +1,4 @@
-<?php 
+II<?php 
 session_start();
 include "../Utils/Util.php";
 include "../Utils/Validation.php";
@@ -115,13 +115,13 @@ if (isset($_SESSION['username']) &&
             <div class="col-md-6">
                 <div class="chart-container">
                     <h5 class="chart-title">Traffic Analysis</h5>
-                    <canvas id="visitedStudentsChart"></canvas>
+                    <div id="visitedStudentsChart"></div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="chart-container">
                     <h5 class="chart-title">Course Enrollment Statistics</h5>
-                    <canvas id="enrollmentChart"></canvas>
+                    <div id="enrollmentChart"></div>
                 </div>
             </div>
         </div>
@@ -135,54 +135,100 @@ if (isset($_SESSION['username']) &&
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
 <script>
-    // Update chart configurations
-    const chartOptions = {
-        plugins: {
-            legend: {
-                labels: {
-                    color: 'white'
-                }
+    // Traffic Analysis Chart
+    var trafficOptions = {
+        series: [{
+            name: 'Visited Students',
+            data: [20, 30, 25, 15, 25, 35, 45]
+        }],
+        chart: {
+            type: 'area',
+            height: 350,
+            foreColor: '#fff',
+            toolbar: {
+                show: false
             }
         },
-        scales: {
-            y: {
-                grid: {
-                    color: 'rgba(255, 255, 255, 0.1)'
-                },
-                ticks: {
-                    color: 'white'
-                }
+        colors: ['#3498db'],
+        dataLabels: {
+            enabled: false
+        },
+        stroke: {
+            curve: 'smooth'
+        },
+        xaxis: {
+            categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        },
+        tooltip: {
+            theme: 'dark'
+        },
+        fill: {
+            type: 'gradient',
+            gradient: {
+                shadeIntensity: 1,
+                opacityFrom: 0.7,
+                opacityTo: 0.2,
+            }
+        }
+    };
+
+    // Course Enrollment Chart
+    var enrollmentOptions = {
+        series: [44, 55, 41, 64, 22],
+        chart: {
+            type: 'pie',
+            height: 350,
+            foreColor: '#fff',
+            background: 'transparent'
+        },
+        labels: ['Programming', 'Design', 'Business', 'Marketing', 'Data Science'],
+        colors: ['#3498db', '#e74c3c', '#2ecc71', '#f1c40f', '#9b59b6'],
+        legend: {
+            position: 'bottom',
+            horizontalAlign: 'center',
+            labels: {
+                colors: '#fff'
+            }
+        },
+        dataLabels: {
+            enabled: true,
+            style: {
+                colors: ['#fff'],
+                fontWeight: 'bold'
             },
-            x: {
-                grid: {
-                    color: 'rgba(255, 255, 255, 0.1)'
+            background: {
+                enabled: false
+            }
+        },
+        responsive: [{
+            breakpoint: 480,
+            options: {
+                chart: {
+                    width: 300
                 },
-                ticks: {
-                    color: 'white'
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }],
+        tooltip: {
+            theme: 'dark',
+            y: {
+                formatter: function(value) {
+                    return value + '%'
                 }
             }
         }
     };
 
-    // Initialize charts with updated styling
-    const visitedStudentsChart = new Chart(
-        document.getElementById('visitedStudentsChart'),
-        {
-            type: 'bar',
-            data: {
-                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-                datasets: [{
-                    label: 'Visited Students',
-                    data: [20, 30, 25, 15],
-                    backgroundColor: 'rgba(52, 152, 219, 0.5)',
-                    borderColor: 'rgba(52, 152, 219, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: chartOptions
-        }
-    );
+    var trafficChart = new ApexCharts(document.querySelector("#visitedStudentsChart"), trafficOptions);
+    var enrollmentChart = new ApexCharts(document.querySelector("#enrollmentChart"), enrollmentOptions);
+    
+    trafficChart.render();
+    enrollmentChart.render();
 
     // Add number animation effect
     function animateNumbers() {
