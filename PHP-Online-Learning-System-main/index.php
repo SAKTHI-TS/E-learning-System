@@ -23,6 +23,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: rgba(12, 28, 61, 0.95);
+            backdrop-filter: blur(10px);
         }
 
         header.scrolled {
@@ -32,15 +34,14 @@
         }
 
         .section-1 {
-            padding-top: 80px; /* Add padding to prevent content from hiding behind fixed header */
-            background: linear-gradient(rgba(12, 28, 61, 0.9), rgba(42, 84, 122, 0.9)), 
-                        url('../img/bg2.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+            padding-top: 0;
+            height: auto;
+            min-height: 80px;
+            background: transparent;
         }
 
         .hero-section {
+            margin-top: 80px; /* Adjust based on navbar height */
             min-height: 100vh;
             display: flex;
             align-items: center;

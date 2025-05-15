@@ -23,6 +23,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: rgba(12, 28, 61, 0.95);
+            backdrop-filter: blur(10px);
         }
 
         header.scrolled {
@@ -32,12 +34,15 @@
         }
 
         .section-1 {
-            padding-top: 80px;
-            background: linear-gradient(rgba(12, 28, 61, 0.9), rgba(42, 84, 122, 0.9)), 
-                        url('../img/bg.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+            padding-top: 0;
+            height: auto;
+            min-height: 0; /* Remove minimum height */
+            background: transparent;
+            position: relative;
+        }
+
+        .section-1 .overl {
+            display: none; /* Remove overlay div space */
         }
 
         .section-2 {
@@ -45,6 +50,7 @@
             padding: 2rem 2rem; /* Reduced padding */
             position: relative;
             overflow: hidden;
+            margin-top: 80px; /* Add margin to compensate for fixed header */
         }
 
         .section-2 h1 {
@@ -169,7 +175,6 @@
 </head>
 <body>
     <section class="section-1 about-p">
-        <div class="overl">.</div>
         <header>
             <h2 class="logo">
                 <img src="assets/img/Logo.png">
