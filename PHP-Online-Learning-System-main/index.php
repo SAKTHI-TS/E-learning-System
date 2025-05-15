@@ -173,7 +173,6 @@
 </head>
 <body>
     <section class="section-1 home-p">
-        <div class="overl glass-effect">.</div>
         <header class="glass-effect">
             <h2 class="logo hover-float">
                   <img src="assets/img/Logo.png" class="pulse">

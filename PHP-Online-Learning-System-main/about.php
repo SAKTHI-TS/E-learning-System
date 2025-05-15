@@ -22,7 +22,7 @@
 
         .section-2 {
             background: linear-gradient(135deg, #0c1c3d 0%, #2a547a 100%);
-            padding: 4rem 2rem;
+            padding: 2rem 2rem; /* Reduced padding */
             position: relative;
             overflow: hidden;
         }
@@ -56,8 +56,8 @@
 
         .goals-list li {
             background: rgba(255, 255, 255, 0.05);
-            margin: 1rem 20px;
-            padding: 1rem;
+            margin: 0.8rem 20px; /* Reduced margin */
+            padding: 0.8rem; /* Reduced padding */
             border-radius: 8px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(4px);
@@ -71,9 +71,17 @@
         }
 
         .logo img {
-            width: 100px;
-            margin-bottom: 1rem;
+            width: 50px; /* Reduced from 100px */
+            height: auto;
+            margin-bottom: 0.5rem;
             animation: pulse 2s infinite;
+        }
+
+        h1 img {
+            width: 60px; /* Added specific size for h1 logo */
+            height: auto;
+            vertical-align: middle;
+            margin-right: 10px;
         }
 
         .main-footer {
@@ -82,7 +90,24 @@
             border-top: 1px solid rgba(255,255,255,0.1);
         }
 
+        /* Add animation delay for goals list items */
+        .goals-list li:nth-child(1) { animation-delay: 0.1s; }
+        .goals-list li:nth-child(2) { animation-delay: 0.2s; }
+        .goals-list li:nth-child(3) { animation-delay: 0.3s; }
+        .goals-list li:nth-child(4) { animation-delay: 0.4s; }
+        .goals-list li:nth-child(5) { animation-delay: 0.5s; }
+        .goals-list li:nth-child(6) { animation-delay: 0.6s; }
+        .goals-list li:nth-child(7) { animation-delay: 0.7s; }
+        .goals-list li:nth-child(8) { animation-delay: 0.8s; }
+        .goals-list li:nth-child(9) { animation-delay: 0.9s; }
+        .goals-list li:nth-child(10) { animation-delay: 1s; }
+
+        /* Fix animation bug */
         @keyframes slideIn {
+            from {
+                transform: translateX(-20px);
+                opacity: 0;
+            }
             to {
                 transform: translateX(0);
                 opacity: 1;
