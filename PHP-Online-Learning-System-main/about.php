@@ -12,45 +12,19 @@
             min-height: 100vh;
         }
 
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            transition: background-color 0.3s ease;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(12, 28, 61, 0.95);
-            backdrop-filter: blur(10px);
-        }
-
-        header.scrolled {
-            background: rgba(12, 28, 61, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
         .section-1 {
-            padding-top: 0;
-            height: auto;
-            min-height: 0; /* Remove minimum height */
-            background: transparent;
-            position: relative;
-        }
-
-        .section-1 .overl {
-            display: none; /* Remove overlay div space */
+            background: linear-gradient(rgba(12, 28, 61, 0.9), rgba(42, 84, 122, 0.9)), 
+                        url('../img/bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
         }
 
         .section-2 {
             background: linear-gradient(135deg, #0c1c3d 0%, #2a547a 100%);
-            padding: 2rem 2rem; /* Reduced padding */
+            padding: 4rem 2rem;
             position: relative;
             overflow: hidden;
-            margin-top: 80px; /* Add margin to compensate for fixed header */
         }
 
         .section-2 h1 {
@@ -82,8 +56,8 @@
 
         .goals-list li {
             background: rgba(255, 255, 255, 0.05);
-            margin: 0.8rem 20px; /* Reduced margin */
-            padding: 0.8rem; /* Reduced padding */
+            margin: 1rem 20px;
+            padding: 1rem;
             border-radius: 8px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(4px);
@@ -97,17 +71,9 @@
         }
 
         .logo img {
-            width: 50px; /* Reduced from 100px */
-            height: auto;
-            margin-bottom: 0.5rem;
+            width: 100px;
+            margin-bottom: 1rem;
             animation: pulse 2s infinite;
-        }
-
-        h1 img {
-            width: 60px; /* Added specific size for h1 logo */
-            height: auto;
-            vertical-align: middle;
-            margin-right: 10px;
         }
 
         .main-footer {
@@ -116,45 +82,7 @@
             border-top: 1px solid rgba(255,255,255,0.1);
         }
 
-        nav a {
-            position: relative;
-            overflow: hidden;
-        }
-
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: #3498db;
-            transform: translateX(-100%);
-            transition: transform 0.3s ease;
-        }
-
-        nav a:hover::after {
-            transform: translateX(0);
-        }
-
-        /* Add animation delay for goals list items */
-        .goals-list li:nth-child(1) { animation-delay: 0.1s; }
-        .goals-list li:nth-child(2) { animation-delay: 0.2s; }
-        .goals-list li:nth-child(3) { animation-delay: 0.3s; }
-        .goals-list li:nth-child(4) { animation-delay: 0.4s; }
-        .goals-list li:nth-child(5) { animation-delay: 0.5s; }
-        .goals-list li:nth-child(6) { animation-delay: 0.6s; }
-        .goals-list li:nth-child(7) { animation-delay: 0.7s; }
-        .goals-list li:nth-child(8) { animation-delay: 0.8s; }
-        .goals-list li:nth-child(9) { animation-delay: 0.9s; }
-        .goals-list li:nth-child(10) { animation-delay: 1s; }
-
-        /* Fix animation bug */
         @keyframes slideIn {
-            from {
-                transform: translateX(-20px);
-                opacity: 0;
-            }
             to {
                 transform: translateX(0);
                 opacity: 1;
@@ -175,6 +103,7 @@
 </head>
 <body>
     <section class="section-1 about-p">
+        <div class="overl">.</div>
         <header>
             <h2 class="logo">
                 <img src="assets/img/Logo.png">
@@ -220,10 +149,10 @@
     <script>
         $(document).ready(function(){
             $(window).on('scroll', function(){
-                if ($(window).scrollTop() > 50) {
-                    $("header").addClass('scrolled');
-                } else {
-                    $("header").removeClass('scrolled');
+                if ($(window).scrollTop()) {
+                    $("header").addClass('bgc');
+                }else{
+                    $("header").removeClass('bgc');
                 }
             });
 

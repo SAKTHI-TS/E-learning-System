@@ -1,6 +1,6 @@
 <?php 
   # Header
-  $title = "LearnTeach.AI - Search result... for 'key word'";
+  $title = "LearnTech.AI - Search result... for 'key word'";
   include "inc/Header.php";
 ?>
 <div class="container">

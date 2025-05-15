@@ -12,36 +12,15 @@
             min-height: 100vh;
         }
 
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            transition: background-color 0.3s ease;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(12, 28, 61, 0.95);
-            backdrop-filter: blur(10px);
-        }
-
-        header.scrolled {
-            background: rgba(12, 28, 61, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
         .section-1 {
-            padding-top: 0;
-            height: auto;
-            min-height: 80px;
-            background: transparent;
+            background: linear-gradient(rgba(12, 28, 61, 0.9), rgba(42, 84, 122, 0.9)), 
+                        url('../img/bg2.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
         }
 
         .hero-section {
-            margin-top: 80px; /* Adjust based on navbar height */
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -190,31 +169,11 @@
             color: #fff;
             border-top: 1px solid rgba(255,255,255,0.1);
         }
-
-        nav a {
-            position: relative;
-            overflow: hidden;
-        }
-
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: #3498db;
-            transform: translateX(-100%);
-            transition: transform 0.3s ease;
-        }
-
-        nav a:hover::after {
-            transform: translateX(0);
-        }
     </style>
 </head>
 <body>
     <section class="section-1 home-p">
+        <div class="overl glass-effect">.</div>
         <header class="glass-effect">
             <h2 class="logo hover-float">
                   <img src="assets/img/Logo.png" class="pulse">
@@ -297,10 +256,10 @@
     <script>
         $(document).ready(function(){
             $(window).on('scroll', function(){
-                if ($(window).scrollTop() > 50) {
-                    $("header").addClass('scrolled');
-                } else {
-                    $("header").removeClass('scrolled');
+                if ($(window).scrollTop()) {
+                    $("header").addClass('bgc');
+                }else{
+                    $("header").removeClass('bgc');
                 }
             });
 
